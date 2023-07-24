@@ -10,10 +10,8 @@ const post = async() => {
 
     console.log("(client: send_post) Response from post request: ", res.data);
   } catch (e: unknown) {
-    if (axios.isAxiosError(e)){
-      if (e.response && e.response.data) {
-        console.log(e.response.data);
-      }
+    if (axios.isAxiosError(e) && e.response && e.response.data){
+      console.log(e.response.data);
     }
   }
 };
@@ -28,7 +26,7 @@ const run_test = (run: string) => {
   switch (run){
     case 'post': { post(); break; }
     case 'get': { get(); break; }
-    case 'init_database': { init_database(); break}
+    case 'init_database': { init_database(); break; }
     default: { return ""; }
   }
 }

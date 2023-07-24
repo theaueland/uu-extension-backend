@@ -27,7 +27,8 @@ server.listen(PORT, () => {
   console.log("Server is running on port ", PORT)
 });
 // ----------------------------------------------------------------------------
-run_test('post');
+//run_test('post');
 //run_test('get');
+run_test('init_database');
 // ----------------------------------------------------------------------------
 export { createHttpError }
