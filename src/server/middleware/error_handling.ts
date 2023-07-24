@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-class serverError extends Error {
+class server_error extends Error {
   statusCode: number
 
   constructor (statusCode: number, message: string) {
@@ -13,11 +13,12 @@ class serverError extends Error {
   }
 }
 
-const error_responder = (err: serverError, _request: Request, response: Response, _next: NextFunction) => {
+const error_responder = (err: server_error, _request: Request, response: Response, _next: NextFunction) => {
+  console.log('middleware: error_responder');
+  if (response.statusCode === 200) { response.statusCode = 400; }
+
   response.header('Content-Type', 'application/json');
   response.json({ error: err.message, status: err.statusCode || 400 })
-
-  if (response.statusCode === 200) { response.statusCode = 400; }
 }
 
 export { error_responder }
