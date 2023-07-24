@@ -1,7 +1,7 @@
 import { Client } from 'pg'
 require('dotenv').config();
 
-const fs = require('fs').promises;
+const fs = require('fs');
 
 const init_client = (): Client | undefined => {
   console.log(
@@ -41,15 +41,10 @@ const init_database = (): number | undefined => {
 
   const sql_script = 'scripts/uu_extension/create_tables.sql';
 
-  try {
-    fs.readFile(sql_script, 'utf8', (err: Error, data: string) => {
-      console.log('trying to read file');
-      if (err){ console.log('an error occured'); console.error(err); return; }
-
-      console.log('data: ');
-      console.log('data: ', data);
-    });
-  } catch (e) { console.log('something went wrong: ', e); }
+  fs.readFile(sql_script, 'utf8', (err: Error, data: string) => {
+  if (err){ console.log('an error occured: ', err); return undefined; }
+    console.log('data: ', data);
+  });
 
   return 0;
 }
