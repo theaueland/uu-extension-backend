@@ -1,6 +1,8 @@
 import { Response, NextFunction } from 'express'
 import { init_client } from './init_client';
 
+const createHttpError = require('http-errors')
+
 const get_sql_query = (query_type: string) => {
   // table users: (email, firstname, lastname, age)
   const select_query = 'SELECT * FROM users;';
@@ -17,13 +19,13 @@ const get_sql_query = (query_type: string) => {
   }
 }
 
-const save_json = async (data: string, _res: Response, next: NextFunction) => {
+const save_json = async (data: string, res: Response, next: NextFunction) => {
   const db_client = init_client();
   if (db_client) {
     try {
       db_client.connect();
 
-      const query = get_sql_query('create');
+      const query = get_sql_query('get');
       const result = await db_client.query(query);
 
       console.log('query: ', query);
@@ -34,7 +36,11 @@ const save_json = async (data: string, _res: Response, next: NextFunction) => {
       await db_client.end();
     }
   }
-  else { console.log('Failed to connect to the database'); next(); }
+  else {
+    console.log('Failed to connect to the database');
+    res.statusCode = 404;
+    return (next(createHttpError(404, 'failed to connect to database')));
+  }
 
   console.log('Saving the data: ', data);
 }

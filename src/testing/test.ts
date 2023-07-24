@@ -1,12 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
+
 import { init_database } from '../postgres/init_client';
 
 const post = async() => {
-  const res: AxiosResponse = await axios.post('http://localhost:8080/storage/save_buttons', {
-    data: "insert JSON data here"
-  });
+  try {
+    const res: AxiosResponse = await axios.post('http://localhost:8080/storage/save_buttons', {
+      data: "insert JSON data here"
+    });
 
-  console.log("(client: send_post) Response from post request: ", res.data);
+    console.log("(client: send_post) Response from post request: ", res.data);
+  } catch (e: unknown) {
+    if (axios.isAxiosError(e)){
+      if (e.response && e.response.data) {
+        console.log(e.response.data);
+      }
+    }
+  }
 };
 
 const get = async() => {
