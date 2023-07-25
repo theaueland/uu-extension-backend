@@ -14,8 +14,8 @@ class server_error extends Error {
 }
 
 const error_responder = (err: server_error, _request: Request, response: Response, _next: NextFunction) => {
-  console.log('middleware: error_responder');
   if (response.statusCode === 200) { response.statusCode = 400; }
+  console.log(err.message);
 
   response.header('Content-Type', 'application/json');
   response.json({ error: err.message, status: err.statusCode || 400 })

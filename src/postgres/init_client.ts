@@ -4,13 +4,6 @@ require('dotenv').config();
 const fs = require('fs');
 
 const init_client = (): Client | undefined => {
-  console.log(
-   'user: ', process.env.DB_USER,
-   ' host: ', process.env.DB_HOST,
-   ' database: ', process.env.DB_DATABASE,
-   ' password: ', process.env.DB_PASSWORD,
-   ' port: ', process.env.DB_PORT,
-  );
   if (process.env.DB_USER &&
       process.env.DB_HOST &&
       process.env.DB_DATABASE &&

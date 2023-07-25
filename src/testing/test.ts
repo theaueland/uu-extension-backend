@@ -2,10 +2,29 @@ import axios, { AxiosResponse } from 'axios';
 
 import { init_database } from '../postgres/init_client';
 
-const post = async() => {
+const post_json = async() => {
   try {
     const res: AxiosResponse = await axios.post('http://localhost:8080/storage/save_buttons', {
-      data: "insert JSON data here"
+      "json": "insert JSON data here"
+    });
+
+    console.log("(client: send_post) Response from post request: ", res.data);
+  } catch (e: unknown) {
+    if (axios.isAxiosError(e) && e.response && e.response.data){
+      console.log(e.response.data);
+    }
+  }
+};
+
+const post_user = async() => {
+  try {
+    const res: AxiosResponse = await axios.post('http://localhost:8080/storage/register_user', {
+      "social_security_number": "123456789",
+      "email": "delta.echo@foxtrot.net",
+      "first_name": "delta",
+      "last_name": "delta",
+      "password": "password",
+      "activation_code": "activation code"
     });
 
     console.log("(client: send_post) Response from post request: ", res.data);
@@ -24,7 +43,8 @@ const get = async() => {
 // ----------------------------------------------------------------------------
 const run_test = (run: string) => {
   switch (run){
-    case 'post': { post(); break; }
+    case 'post_json': { post_json(); break; }
+    case 'post_user': { post_user(); break; }
     case 'get': { get(); break; }
     case 'init_database': { init_database(); break; }
     default: { return ""; }

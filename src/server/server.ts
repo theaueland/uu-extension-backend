@@ -21,14 +21,12 @@ server.use(createHttpError)
 server.use(error_responder);
 
 // ----------------------------------------------------------------------------
-// TODO: add error handling, the server is now crashing when a POST request is
-// sent to an invalid endpoint
 server.listen(PORT, () => {
   console.log("Server is running on port ", PORT)
 });
 // ----------------------------------------------------------------------------
-//run_test('post');
+//run_test('post_user');
+run_test('post_json');
 //run_test('get');
-run_test('init_database');
 // ----------------------------------------------------------------------------
 export { createHttpError }
