@@ -1,7 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { init_database } from '../postgres/init_client';
-
 const post_json = async() => {
   try {
     const res: AxiosResponse = await axios.post('http://localhost:8080/storage/save_buttons', {
@@ -36,9 +34,14 @@ const post_user = async() => {
 };
 
 const get = async() => {
-  const res: AxiosResponse = await axios.get('http://localhost:8080/storage/buttons');
-
-  console.log("(client: send_get) Response from get request: ", res.data);
+  try {
+    const res: AxiosResponse = await axios.get('http://localhost:8080/storage/all_users');
+    console.log("(client: send_get) Response from get request: ", res.data);
+  } catch (e: unknown) {
+    if (axios.isAxiosError(e) && e.response && e.response.data){
+      console.log(e.response.data);
+    }
+  }
 };
 // ----------------------------------------------------------------------------
 const run_test = (run: string) => {
@@ -46,7 +49,6 @@ const run_test = (run: string) => {
     case 'post_json': { post_json(); break; }
     case 'post_user': { post_user(); break; }
     case 'get': { get(); break; }
-    case 'init_database': { init_database(); break; }
     default: { return ""; }
   }
 }
