@@ -7,9 +7,6 @@ const index_router = Router()
 index_router.get('/', (_req:Request, res:Response) => {
   res.send({ message: "index page" });
 });
-index_router.get('/nothing', (_req:Request, res:Response) => {
-  res.send({ message: "nothing page" });
-});
 index_router.get('/*', (_req:Request, res:Response) => {
   res.send({ message: "Endpoint does not exist" });
 });

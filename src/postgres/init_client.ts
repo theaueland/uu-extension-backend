@@ -16,7 +16,6 @@ export const init_client = (): Client | undefined => {
       port: +process.env.DB_PORT
     })
 
-    console.log('Successfully connected to database');
     return client;
 
   } else {

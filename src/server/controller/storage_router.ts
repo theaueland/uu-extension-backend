@@ -1,40 +1,30 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
-import * as db from '../../postgres/db_test';
 import * as buttons from '../../postgres/models/buttons_model';
 
 const createHttpError = require('http-errors')
+
 const storage_router = Router()
 
-storage_router.get('/buttons', async (_req:Request, res:Response, next: NextFunction) => {
-  await db.query('get', 'buttons', "", next);
+storage_router.get('/buttons', async (_req:Request, res:Response, _next: NextFunction) => {
+  await buttons.get_json();
   res.send({ message: "get the JSON file from the database for buttons" });
 });
 storage_router.post('/save_buttons', async (req: Request, res: Response, next: NextFunction) => {
-  if (!buttons.validate_json) {
-    return next(createHttpError(404, 'Invalid JSON format'));
-  }
+  try {
+    await buttons.post_json(req.body);
+    const response_message = "Successfully saved the JSON data: " + req.body;
+    res.send({ message: response_message });
 
-  await db.query('post', 'buttons', req.body, next);
+  } catch (err: unknown) { next(createHttpError(401, err)); }
+});
+storage_router.get('/delete_all_buttons', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    await buttons.delete_json();
+    const response_message = "Deleted all JSON data in buttons_test table";
+    res.send({ message: response_message });
 
-  if (res.statusCode === 200) {
-    res.send({ message: "Successfully saved the JSON data" });
-  }
+  } catch (err: unknown) { next(createHttpError(401, err)); }
 });
-// ----------- Request handlers for the user model (should not be in this file)
-storage_router.get('/all_users', async (_req: Request, res: Response, next: NextFunction) => {
-  await db.query('get', 'user', '', next);
-  if (res.statusCode === 200) {
-    res.send({ message: "Returning all users" });
-  }
-});
-storage_router.post('/register_user', async (req: Request, res: Response, next: NextFunction) => {
-  await db.query('post', 'user', req.body, next);
-  if (res.statusCode === 200) {
-    res.send({ message: "Successfully registered a new user" });
-  }
-});
-
-// ---------------------------------------------------------------------------
 
 export { storage_router }
