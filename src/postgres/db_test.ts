@@ -7,8 +7,6 @@ import * as buttons from './models/buttons_model';
 
 const createHttpError = require('http-errors')
 
-// TODO: move this function to a utils file and call it from a model (not
-// directly from the request handler)
 export const query = async(method: string, model: string, data: string, next: NextFunction) => {
   const db_client = init_client();
   if (db_client) {

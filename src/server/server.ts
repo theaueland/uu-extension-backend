@@ -28,5 +28,6 @@ server.listen(PORT, () => {
 //run_test('get');
 //run_test('post_users');
 run_test('post_json');
+//run_test('post_object');
 // ----------------------------------------------------------------------------
 export { createHttpError }
