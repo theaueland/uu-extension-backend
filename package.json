@@ -27,6 +27,7 @@
     "fs": "^0.0.1-security",
     "http-errors": "^2.0.0",
     "pg": "^8.11.1",
+    "puppeteer": "^20.9.0",
     "sqlite3": "^5.1.6"
   }
 }
