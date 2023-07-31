@@ -13,7 +13,7 @@ class server_error extends Error {
   }
 }
 
-const error_responder = (err: server_error, _request: Request, response: Response, _next: NextFunction) => {
+const error_responder = (err: server_error, _request: Request, response: Response, _next?: NextFunction) => {
   if (response.statusCode === 200) { response.statusCode = 400; }
   console.log(err.message);
 
@@ -21,4 +21,4 @@ const error_responder = (err: server_error, _request: Request, response: Respons
   response.json({ error: err.message, status: err.statusCode || 400 })
 }
 
-export { error_responder }
+export { error_responder, server_error }
