@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 
-import { index_router } from './controller/indexRouter';
-import { storage_router } from './controller/storageRouter';
+import { indexRouter } from './controller/indexRouter';
+import { storageRouter } from './controller/storageRouter';
 
 import { error_responder} from './middleware/errorHandling';
 
@@ -14,8 +14,8 @@ const createHttpError = require('http-errors')
 // ----------------------------------------------------------------------------
 
 server.use(express.json());
-server.use('/storage', storage_router);
-server.use('/', index_router);
+server.use('/storage', storageRouter);
+server.use('/', indexRouter);
 
 server.use(createHttpError)
 server.use(error_responder);
