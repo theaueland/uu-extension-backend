@@ -10,10 +10,6 @@ export interface Buttons_test {
   chromeExtensionVersion: string | null;
   outcome: string;
 }
-export interface Buttons_test_database {
-  id: number;
-  test_result: Buttons_test;
-}
 
 export interface Test {
   id: number;
