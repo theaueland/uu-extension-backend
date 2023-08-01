@@ -42,6 +42,10 @@ export async function retrieveComputedProperties(url: string): Promise<ComputedP
         // Add the outerHTML to the corresponding computed property
         computedProperties[i].element = outerHTML;
       }
+
+      for (const computedProperty of computedProperties) {
+        console.log(computedProperty)
+      }
   
 
       await browser.close();

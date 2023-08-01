@@ -42,6 +42,7 @@ function retrieveComputedProperties(url) {
                 // Add the outerHTML to the corresponding computed property
                 computedProperties[i].element = outerHTML;
             }
+            yield page.waitForTimeout(10000);
             yield browser.close();
             return computedProperties;
         }
