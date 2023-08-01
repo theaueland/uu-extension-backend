@@ -34,6 +34,14 @@ function retrieveComputedProperties(url) {
             });
             // Fetch computed properties for the root node and its descendants
             const computedProperties = yield getComputedProperties(client, nodes);
+            const buttonElements = yield page.$$('button');
+            for (let i = 0; i < buttonElements.length; i++) {
+                const buttonElement = buttonElements[i];
+                // Get outerHTML
+                const outerHTML = yield page.evaluate((el) => el.outerHTML, buttonElement);
+                // Add the outerHTML to the corresponding computed property
+                computedProperties[i].element = outerHTML;
+            }
             yield browser.close();
             return computedProperties;
         }
@@ -48,12 +56,14 @@ function getComputedProperties(client, nodes) {
     return __awaiter(this, void 0, void 0, function* () {
         const computedProperties = [];
         for (const node of nodes) {
-            const { name, role } = node;
+            const { name, role, properties } = node;
             // Check if the node has the desired role (e.g., role="button")
             if (role && role.value === 'button') {
                 computedProperties.push({
                     name: name || '',
                     role: role.value || '',
+                    properties: properties || '',
+                    element: '',
                 });
             }
             // Recursively fetch computed properties for child nodes

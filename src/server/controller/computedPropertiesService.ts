@@ -21,8 +21,9 @@ export async function retrieveComputedProperties(url: string): Promise<ComputedP
   
       // Get the root document node ID
       const { root } = await client.send('DOM.getDocument');
-      const nodeId = root.nodeId;
-  
+      const nodeId = root.nodeId;      
+
+
       // Query the accessibility tree to get computed properties for the root node
       const { nodes } = await client.send('Accessibility.queryAXTree', {
         nodeId: nodeId,
@@ -30,7 +31,19 @@ export async function retrieveComputedProperties(url: string): Promise<ComputedP
   
       // Fetch computed properties for the root node and its descendants
       const computedProperties = await getComputedProperties(client, nodes);
+
+      const buttonElements = await page.$$('button');
+
+      for (let i = 0; i < buttonElements.length; i++) {
+        const buttonElement = buttonElements[i];
+        // Get outerHTML
+        const outerHTML = await page.evaluate((el:any) => el.outerHTML, buttonElement);
   
+        // Add the outerHTML to the corresponding computed property
+        computedProperties[i].element = outerHTML;
+      }
+  
+
       await browser.close();
   
       return computedProperties;
@@ -42,21 +55,25 @@ export async function retrieveComputedProperties(url: string): Promise<ComputedP
   
   async function getComputedProperties(client: any, nodes: any[]): Promise<ComputedProperty[]> {
     const computedProperties: ComputedProperty[] = [];
-  
+    
     for (const node of nodes) {
-      const { name, role } = node;
-  
+
+      const { name, role, properties } = node;
       // Check if the node has the desired role (e.g., role="button")
       if (role && role.value === 'button') {
+
         computedProperties.push({
-          name: name || '',
-          role: role.value || '',
-        });
+            name: name || '',
+            role: role.value || '',
+            properties: properties || '',
+            element: '',
+          });
       }
+        
   
       // Recursively fetch computed properties for child nodes
       if (node.children) {
-        const childProperties = await getComputedProperties(client, node.children);
+        const childProperties = await getComputedProperties(client, node.children,);
         computedProperties.push(...childProperties);
       }
     }
