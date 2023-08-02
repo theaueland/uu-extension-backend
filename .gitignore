@@ -4,6 +4,7 @@ node_modules
 dist/
 package-lock.json
 migrations/20230725063037-users.js
+build
 
 .vscode/*
 !.vscode/settings.json
